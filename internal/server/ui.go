@@ -43,7 +43,7 @@ pre.detail{background:var(--bg);border:1px solid var(--bg3);padding:.5rem;font-s
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 </head><body>
 <div class="hdr"><h1><span>Probe</span></h1><div style="display:flex;gap:.5rem;align-items:center"><span style="font-size:.7rem;color:var(--leather)">Bins: <b id="sBins">-</b></span><button class="btn btn-p" onclick="showNewBin()">+ Bin</button></div></div>
-<div class="main">
+<div class="main"><div id="upgrade-banner" style="display:none;background:#241e18;border:1px solid #8b3d1a;border-left:3px solid #c45d2c;padding:.6rem 1rem;font-size:.78rem;color:#bfb5a3;margin-bottom:.8rem"><strong style="color:#f0e6d3">Free tier</strong> — 10 items max. <a href="https://stockyard.dev/probe/" target="_blank" style="color:#e8753a">Upgrade to Pro →</a></div>
 <div id="binList"></div>
 <div id="reqPane" style="display:none;margin-top:1rem">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
@@ -130,4 +130,5 @@ async function delBin(id){await api('/api/bins/'+id,{method:'DELETE'});if(curBin
 async function clearReqs(){if(!curBin)return;await api('/api/bins/'+curBin+'/clear',{method:'POST'});loadReqs(curBin);init()}
 function closeModal(){document.getElementById('modal').innerHTML=''}
 init();setInterval(()=>{if(curBin)loadReqs(curBin)},5000)
+fetch('/api/tier').then(r=>r.json()).then(j=>{if(j.tier==='free'){var b=document.getElementById('upgrade-banner');if(b)b.style.display='block'}}).catch(()=>{var b=document.getElementById('upgrade-banner');if(b)b.style.display='block'});
 </script></body></html>`
