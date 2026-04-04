@@ -10,7 +10,7 @@ import (
 	"github.com/stockyard-dev/stockyard-probe/internal/store"
 )
 
-type Server struct { db *store.DB; mux *http.ServeMux }
+type Server struct { db *store.DB; mux *http.ServeMux; limits Limits }
 
 func New(db *store.DB, limits Limits) *Server {
 	s := &Server{db: db, mux: http.NewServeMux(), limits: limits}
@@ -27,7 +27,7 @@ func New(db *store.DB, limits Limits) *Server {
 	s.mux.HandleFunc("GET /ui", s.dashboard)
 	s.mux.HandleFunc("GET /ui/", s.dashboard)
 	s.mux.HandleFunc("GET /", s.root)
-s.mux.HandleFunc("GET /api/tier",func(w http.ResponseWriter,r *http.Request){wj(w,200,map[string]any{"tier":s.limits.Tier,"upgrade_url":"https://stockyard.dev/probe/"})})
+s.mux.HandleFunc("GET /api/tier",func(w http.ResponseWriter,r *http.Request){writeJSON(w,200,map[string]any{"tier":s.limits.Tier,"upgrade_url":"https://stockyard.dev/probe/"})})
 	return s
 }
 
